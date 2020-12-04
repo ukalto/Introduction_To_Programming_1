@@ -3,6 +3,7 @@
 */
 public class Aufgabe5 {
 
+    static int counter = 0;
     private static void drawPatternRecursive(int x, int y, int l, boolean c) {
         // TODO: Implementieren Sie hier Ihre Lösung für die Methode
         if (x == 0 && y == 0) {
@@ -15,11 +16,13 @@ public class Aufgabe5 {
             drawPatternRecursive(x - l / 2, y + l / 2, l / 2, !c);
             drawPatternRecursive(x - l / 2, y - l / 2, l / 2, !c);
             //Die nachfolgende Code-Line muss auskommentiert werden um das dargestellte Muster 1b nachzustellen: Zusatzfrage 3.
+            counter ++;
             drawPatternRecursive(x + l / 2, y + l / 2, l / 2, !c);
             StdDraw.setPenColor(c ? StdDraw.ORANGE : StdDraw.BLUE);
             StdDraw.filledRectangle(x, y, l, l * 0.05);
             StdDraw.filledRectangle(x, y, l * 0.05, l);
         }
+
         StdDraw.show();
     }
 
@@ -90,7 +93,8 @@ public class Aufgabe5 {
     }
 
     public static void main(String[] args) {
-        //drawPatternRecursive(0, 0, 512, true);
+        drawPatternRecursive(0, 0, 512, true);
+        System.out.println(counter);
         drawPatternIterative(512);
     }
 }
