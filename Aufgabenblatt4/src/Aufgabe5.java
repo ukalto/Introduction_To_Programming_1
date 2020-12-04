@@ -31,7 +31,7 @@ public class Aufgabe5 {
     }
 
     private static void drawChart(int[] sunHours) {
-        int width = 1275;
+        int width = 1400;
         int height = 600;
         StdDraw.setCanvasSize(width, height);
         StdDraw.setXscale(0, width);
@@ -82,15 +82,15 @@ public class Aufgabe5 {
         }
 
         //Years
-        for (int i = 1955; i < 2016; i++) {
+        for (int i = 1955; i < 2020; i++) {
             StdDraw.text((30 + (i - 1955) * 20 + 15 / 2f), 15, Integer.toString(i).substring(2));
 
         }
     }
 
     public static void main(String[] args) {
-        String[] data = readFileData("weather_data.csv", 2, 783);
-        int[] resultArray = new int[61];
+        String[] data = readFileData("weather_data.csv", 2, 781);
+        int[] resultArray = new int[65];
         extractData(data, resultArray, 16, 12);
         drawChart(resultArray);
     }
