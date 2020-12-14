@@ -66,8 +66,8 @@ public class Aufgabe1 {
     //
     //Frage 3: Das kopierte Array referenziert lediglich auf das eigentliche Array. Das wird shallow clone genannt. In dem Fall brauchen wir ein .clone nach dem workArray um das Array wirklich zu klonen. Das nennt man dann deep clone.
     //
-    //Frage 4: Im genNewArrayContent(filledArray); wird das filledArray nicht endgültig geändert und nur die Änderungen innerhalb der Methode werden ausgeprintet. Allerdings verweist das filled Array in der Main Methode in der darauffolgenden Zeile auf den vorherigen Stand,
-    //         da sich die Objekte nicht durch die Methode genNewArrayContent endgültig verändern.
+    //Frage 4: Im genNewArrayContent(filledArray); wird das filledArray nicht endgültig geändert und nur die Änderungen innerhalb der Methode werden ausgeprintet. Allerdings verweist das filled Array in der Main Methode in der darauffolgenden Zeile auf den
+    //         vorherigen Stand, da sich die Objekte nicht durch die Methode genNewArrayContent endgültig verändern.
     //
     //Zusatzfragen:
     //
@@ -76,5 +76,5 @@ public class Aufgabe1 {
     //3. Per se kann die Länge eines Arrays nicht verändert werden. Sie wird entweder beim deklarieren initialisiert oder kann auch erst später initialisiert werden. Andernfalls muss ich ein neues Array erstellen.
     //4. Ich muss es deep klonen. Was so viel bedeuted wie: Ich initialisiere ein neues Array und dieses klone ich dann auf das Array meiner begirde. Mit der ".clone" Methode. Man könnte auch noch die ".copyOf" Methode verwenden.
     //5. Ja, die Indexzählung beginnt immer bei 0.
-    //6. Die Arrays per se vergleicht man meist nicht mit ==  sondern mit .equals. Sonst vergleicht man die Bezeichnung(id) des Arrays. Meist vergleicht man allerdings die Objekte in einem Array.
+    //6. Die Arrays per se vergleicht man meist nicht mit == sondern mit .equals. Sonst vergleicht man die Bezeichnung(id) des Arrays. Meist vergleicht man allerdings die Objekte in einem Array.
 }

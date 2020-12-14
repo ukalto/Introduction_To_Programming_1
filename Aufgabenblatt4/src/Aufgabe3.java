@@ -45,7 +45,7 @@ public class Aufgabe3 {
         for (int i = workArray1.length; i < array.length; i++) {
             array[i] = workArray2[i - workArray1.length];
         }
-        return array; //Zeile kann geändert oder entfernt werden.
+        return array;
     }
 
     public static void main(String[] args) {

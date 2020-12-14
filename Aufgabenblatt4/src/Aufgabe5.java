@@ -8,11 +8,12 @@ public class Aufgabe5 {
 
     private static String[] readFileData(String fileName, int lineStart, int lineEnd) {
         In fileReader = new In(fileName);
-        String[] content = new String[lineEnd - 1];
-        fileReader.readLine();
-        for (int i = 0; i < lineEnd - 1; i++) {
-            content[i] = fileReader.readLine();
+        String[] content = new String[lineEnd - lineStart + 1];
+        for (int i = 1; fileReader.hasNextLine() && i < lineEnd + 1; i++) {
+            String currentLine = fileReader.readLine();
+            if (i >= lineStart) content[i - lineStart] = currentLine;
         }
+        fileReader.close();
         return content;
     }
 
@@ -31,7 +32,7 @@ public class Aufgabe5 {
     }
 
     private static void drawChart(int[] sunHours) {
-        int width = 1400;
+        int width = 1370;
         int height = 600;
         StdDraw.setCanvasSize(width, height);
         StdDraw.setXscale(0, width);
@@ -43,7 +44,7 @@ public class Aufgabe5 {
 
         //Bars
         for (int i = 0; i < sunHours.length; i++) {
-            // side distance(30)+barPosition(i)*(BarGab(5)+BarLength(15))+BarLength(15)/2 <-- to get the mid coordinate
+            // side distance(30)+barPosition(i)*(BarGap(5)+BarLength(15))+BarLength(15)/2 <-- to get the mid coordinate
             // LengthOfBar(i)/number to lower the total height, because of no space+the space from the bottom
             // LengthOfBar(i)/number to lower the total height, because of no space
             // barPosition(i)
@@ -72,13 +73,15 @@ public class Aufgabe5 {
         StdDraw.setPenRadius(0.002);
 
         //Draw max and min line
-        StdDraw.line(30, max / 4f + 5, width - 30, max / 4f + 5);
-        StdDraw.line(30, min / 4f + 5, width - 30, min / 4f + 5);
+        StdDraw.line(30, max / 4f + 5, 25 + (sunHours.length * 20), max / 4f + 5);
+        StdDraw.line(30, min / 4f + 5, 25 + (sunHours.length * 20), min / 4f + 5);
 
         //Max and min text
-        for (int i = 15; i < width; i += width - 30) {
-            StdDraw.text(i, max / 4f + 5, Integer.toString(max));
-            StdDraw.text(i, min / 4f + 5, Integer.toString(min));
+        int x = 15;
+        for (int i = 0; i < 2; i++) {
+            StdDraw.text(x, max / 4f + 5, Integer.toString(max));
+            StdDraw.text(x, min / 4f + 5, Integer.toString(min));
+            x += 25 + (sunHours.length * 20);
         }
 
         //Years

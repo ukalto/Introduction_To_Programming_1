@@ -17,27 +17,23 @@ public class Aufgabe2 {
         System.out.println();
     }
 
-    private static void genArray(int[] filledArray) {
-        int value = 12;
+    private static void genArray(int[] filledArray, int startValue, int multipleOf) {
         for (int i = 0; i < filledArray.length; i++) {
-            if (value % 9 == 0)
+            if (startValue % 9 == 0)
                 filledArray[i] = 0;
             else {
-                filledArray[i] = value;
+                filledArray[i] = startValue;
             }
-            value += 4;
+            startValue += multipleOf;
         }
     }
 
     private static void genNewArrayContent(int[] workArray) {
         int[] copiedArray = new int[workArray.length + 2];
-        for (int i = 0; i < copiedArray.length; i++) {
-            if (i == 0 || i == copiedArray.length - 1) {
-                copiedArray[0] = 100;
-                copiedArray[copiedArray.length - 1] = 200;
-            } else {
-                copiedArray[i] = workArray[i - 1];
-            }
+        copiedArray[0] = 100;
+        copiedArray[copiedArray.length - 1] = 200;
+        for (int i = 1; i < copiedArray.length - 1; i++) {
+            copiedArray[i] = workArray[i - 1];
         }
         printArray(copiedArray);
     }
@@ -77,7 +73,6 @@ public class Aufgabe2 {
         System.out.println(smallestNumber + " " + (sum / filledArray.length) + " " + highestNumber);
     }
 
-
     public static void main(String[] args) {
         // TODO: Implementieren Sie hier Ihre Lösung für die Angabe
         int[] filledArray1 = {1, 4, 7, 0, 3, 6, 2, 8};
@@ -88,7 +83,7 @@ public class Aufgabe2 {
 
         printArrayWithComma(filledArray1);
 
-        genArray(emptyArray);
+        genArray(emptyArray, 12, 4);
         printArray(emptyArray);
 
         genNewArrayContent(filledArray2);
