@@ -10,7 +10,9 @@ public class Aufgabe2 {
         double[][] outputArray = new double[n][n];
         if (n % 2 != 0 && n >= 1) {
             for (int i = 0; i < outputArray.length; i++) {
-                Arrays.fill(outputArray[i], (1 / (double) (n * n)));
+                for (int j = 0; j < outputArray[i].length; j++) {
+                    outputArray[i][j] = (1.0 / (n * n));
+                }
             }
             return outputArray;
         } else return null;
@@ -18,11 +20,7 @@ public class Aufgabe2 {
 
     private static double[][] applyFilter(double[][] workArray, double[][] filterArray) {
         // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        int highestLength = 0;
-        for (int i = 0; i < workArray.length; i++) {
-            if (highestLength < workArray[i].length) highestLength = workArray[i].length;
-        }
-        double[][] outputArray = new double[workArray.length][highestLength];
+        double[][] outputArray = new double[workArray.length][workArray[0].length];
         for (int i = 0; i <= (workArray.length - filterArray.length); i++) {
             for (int j = 0; j <= (workArray[i].length - filterArray[i].length); j++) {
                 double sum = 0;
@@ -31,7 +29,7 @@ public class Aufgabe2 {
                         sum += (filterArray[k][l] * workArray[k + i][l + j]);
                     }
                 }
-                if (workArray.length == filterArray.length || highestLength == filterArray[i].length)
+                if (workArray.length == filterArray.length || workArray[0].length == filterArray[i].length)
                     outputArray[(workArray.length / 2) + i][(workArray.length / 2) + j] = sum;
                 else outputArray[(workArray.length / 2) + i - 1][(workArray.length / 2) + j - 1] = sum;
             }

@@ -10,17 +10,16 @@ public class Aufgabe1 {
         // TODO: Implementieren Sie hier Ihre Lösung für die Methode
         int[][] array = new int[n][n];
         boolean check = false;
-        for (int i = 0, start = 1; i < array.length; i++, start++) {
-            for (int j = 0, x = start; j < array[i].length; j++) {
-                if (x == n) check = true;
-                array[i][j] = x;
+        for (int i = 0, start = 1; i < array.length; i++, start++, check = false) {
+            for (int j = 0, counter = start; j < array[i].length; j++) {
+                if (counter == n) check = true;
+                array[i][j] = counter;
                 if (!check) {
-                    x++;
+                    counter++;
                 } else {
-                    x--;
+                    counter--;
                 }
             }
-            check = false;
         }
         return array;
     }
@@ -40,6 +39,7 @@ public class Aufgabe1 {
         for (int i = 0; i < inputArray.length; i++) {
             if (highestLength < inputArray[i].length) highestLength = inputArray[i].length;
         }
+
         int[][] outputArray = new int[inputArray.length][highestLength];
 
         for (int i = 0; i < outputArray.length; i++) {

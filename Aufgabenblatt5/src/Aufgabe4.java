@@ -25,10 +25,7 @@ public class Aufgabe4 {
         for (int i = 0; i < landscape.length; i++) {
             for (int j = 0; j < landscape[i].length; j++) {
                 StdDraw.setPenColor(landscape[i][j]);
-                StdDraw.filledSquare(
-                        i * canvasSize / (float) landscape.length,
-                        j * canvasSize / (float) landscape.length,
-                        canvasSize / (float) landscape.length);
+                StdDraw.filledSquare(i * canvasSize / (float) (landscape.length-1), j * canvasSize / (float) (landscape.length-1), (canvasSize / (float) (landscape.length-1)) * 0.5);
             }
         }
     }
@@ -36,17 +33,16 @@ public class Aufgabe4 {
     private static void simLiquidFlow(Color[][] landscape, int x, int y) {
         // TODO: Implementieren Sie hier Ihre Lösung für die Angabe
         if (x < 0 || y < 0) return;
-        if (landscape[x][y] == Color.GREEN) {
-            landscape[x][y] = Color.ORANGE;
-            if (Math.random() >= 0.5) simLiquidFlow(landscape, x + 1, y - 1);
-            else simLiquidFlow(landscape, x - 1, y - 1);
-        } else if (landscape[x][y] == Color.GRAY) {
+        if (landscape[x][y] == Color.BLACK) return;
+        if (landscape[x][y] == Color.GRAY) {
             if (y + 1 < landscape.length) landscape[x][y + 1] = Color.ORANGE;
             landscape[x][y] = Color.BLACK;
             simLiquidFlow(landscape, x - 1, y);
             simLiquidFlow(landscape, x + 1, y);
-        } else if (landscape[x][y] == Color.BLACK) {
-            return;
+        } else {
+            landscape[x][y] = Color.ORANGE;
+            if (Math.random() > 0.5) simLiquidFlow(landscape, x + 1, y - 1);
+            else simLiquidFlow(landscape, x - 1, y - 1);
         }
     }
 
@@ -55,16 +51,17 @@ public class Aufgabe4 {
         if (landscape[x][y] == Color.GREEN) landscape[x][y] = Color.RED;
         else if (landscape[x][y] == Color.ORANGE) {
             spreadFireInLiquid(landscape, x, y);
+            return;
         } else return;
 
         //up
-        if (Math.random() >= 0.4 && y + 1 < landscape[x].length) simSpreadingFire(landscape, x, y + 1);
+        if (Math.random() > 0.4 && y + 1 < landscape[x].length) simSpreadingFire(landscape, x, y + 1);
         //left
-        if (Math.random() >= 0.4 && x - 1 >= 0) simSpreadingFire(landscape, x - 1, y);
+        if (Math.random() > 0.4 && x - 1 >= 0) simSpreadingFire(landscape, x - 1, y);
         //right
-        if (Math.random() >= 0.4 && x + 1 < landscape.length) simSpreadingFire(landscape, x + 1, y);
+        if (Math.random() > 0.4 && x + 1 < landscape.length) simSpreadingFire(landscape, x + 1, y);
         //down
-        if (Math.random() >= 0.4 && y - 1 >= 0) simSpreadingFire(landscape, x, y - 1);
+        if (Math.random() > 0.4 && y - 1 >= 0) simSpreadingFire(landscape, x, y - 1);
     }
 
     private static void spreadFireInLiquid(Color[][] landscape, int x, int y) {
@@ -105,7 +102,7 @@ public class Aufgabe4 {
         StdDraw.pause(1000);
 
         landscape[75][25] = Color.GREEN;
-        //simSpreadingFire(landscape, 25, 75);
+        simSpreadingFire(landscape, 25, 75);
         drawLandscape(landscape);
         StdDraw.show();
     }

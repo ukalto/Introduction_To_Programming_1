@@ -59,81 +59,43 @@ public class Aufgabe3 {
         StdDraw.disableDoubleBuffering();
     }
 
-    //detect waldo by template matching and return its bounding box values
     private static int[] detectWaldo(int[][] imgArrayGrayscale, int[][] templateArray) {
-        int lengthx = templateArray.length;
-        int lengthy = templateArray[0].length;
-        int minSAD = calcSAD(
-                trimMainPicture(
-                        imgArrayGrayscale,
-                        lengthx,
-                        lengthy,
-                        0,
-                        0),
-                templateArray);
         int[] boundingBox = new int[4];
-
-        for (int i = 0; i < imgArrayGrayscale.length - lengthx; i++) {
-            for (int j = 0; j < imgArrayGrayscale[i].length - lengthy; j++) {
-                int currentSAD = calcSAD(
-                        trimMainPicture(
-                                imgArrayGrayscale,
-                                lengthx,
-                                lengthy,
-                                i,
-                                j),
-                        templateArray);
+        int minSAD = Integer.MAX_VALUE;
+        int currentSAD = 0;
+        for (int i = 0; i <= (imgArrayGrayscale.length - templateArray.length); i++) {
+            for (int j = 0; j <= (imgArrayGrayscale[i].length - templateArray[0].length); j++) {
+                for (int k = 0; k < templateArray.length; k++) {
+                    for (int l = 0; l < templateArray[k].length; l++) {
+                        currentSAD += Math.abs(templateArray[k][l] - imgArrayGrayscale[i+k][j+l]);
+                    }
+                }
                 if (minSAD > currentSAD) {
                     minSAD = currentSAD;
                     boundingBox[0] = i;
                     boundingBox[1] = j;
-                    boundingBox[2] = i + lengthx - 1;
-                    boundingBox[3] = j + lengthy - 1;
+                    boundingBox[2] = i + templateArray.length - 1;
+                    boundingBox[3] = j + templateArray[0].length - 1;
                 }
+                currentSAD = 0;
             }
-        }
-
-        for (int i = 0; i < boundingBox.length; i++) {
-            System.out.println(boundingBox[i]);
         }
 
         return boundingBox;
     }
 
-    //Trims the main picture to the same size as the template picture to calculate the SAD after
-    private static int[][] trimMainPicture(int[][] workArray, int height, int width, int distanceTop, int distanceLeft) {
-        int[][] resultArray = new int[height][width];
-        for (int i = distanceTop, x = 0; i < height + distanceTop; i++, x++) {
-            for (int j = distanceLeft, y = 0; j < width + distanceLeft; j++, y++) {
-                resultArray[x][y] = workArray[i][j];
-            }
-        }
-        return resultArray;
-    }
-
-    //Calculates the SAD, by subtracting all values of both pictures (template - trimmed main picture)
-    private static int calcSAD(int[][] pic1, int[][] pic2) {
-        int sad = 0;
-        for (int i = 0; i < pic1.length; i++) {
-            for (int j = 0; j < pic1[i].length; j++) {
-                sad += Math.abs(pic2[i][j] - pic1[i][j]);
-            }
-        }
-        return sad;
-    }
-
     public static void main(String[] args) {
         //waldo1
-        //String linkWaldo = "https://owncloud.tuwien.ac.at/index.php/s/lht2cy0GFclxbl2/download"; //waldo1.png
-        //String linkTemplate = "https://owncloud.tuwien.ac.at/index.php/s/f9onCE9vf89ZYLJ/download"; //template1.png
+        String linkWaldo = "https://owncloud.tuwien.ac.at/index.php/s/lht2cy0GFclxbl2/download"; //waldo1.png
+        String linkTemplate = "https://owncloud.tuwien.ac.at/index.php/s/f9onCE9vf89ZYLJ/download"; //template1.png
 
         //waldo2
         //String linkWaldo = "https://owncloud.tuwien.ac.at/index.php/s/3HYvf4xBkiZUYr1/download"; //waldo2.png
         //String linkTemplate = "https://owncloud.tuwien.ac.at/index.php/s/spG8LoK4x6HqOkf/download"; //template2.png
 
         //waldo3
-        String linkWaldo = "https://owncloud.tuwien.ac.at/index.php/s/9RmCwGkOjgwwkzh/download"; //waldo3.png
-        String linkTemplate = "https://owncloud.tuwien.ac.at/index.php/s/CDVrqihS7t9lfvm/download"; //template3.png
+        //String linkWaldo = "https://owncloud.tuwien.ac.at/index.php/s/9RmCwGkOjgwwkzh/download"; //waldo3.png
+        //String linkTemplate = "https://owncloud.tuwien.ac.at/index.php/s/CDVrqihS7t9lfvm/download"; //template3.png
 
 
         BufferedImage img = null;
