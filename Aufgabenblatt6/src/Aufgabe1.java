@@ -4,6 +4,7 @@
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 public class Aufgabe1 {
     private static final int SQUARE_SIZE = 40;
@@ -163,7 +164,7 @@ public class Aufgabe1 {
         // TODO: Implementieren Sie hier Ihre Lösung für die Methode
         int amountOfGoals = 0;
         for (int i = 0; i < levelString.length(); i++) {
-            if (levelString.charAt(i) == '.') i++;
+            if (levelString.charAt(i) == '.') amountOfGoals++;
         }
         return amountOfGoals;
     }
@@ -202,26 +203,24 @@ public class Aufgabe1 {
     // returns true if figure was moved
     private static boolean move(char[][] level, int direction) {
         // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        for (int i = 0; i < level.length; i++) {
-            for (int j = 0; j < level[i].length; j++) {
-                if (direction == 1) {
-                    if (i > 0 && level[i - 1][j] == ' ') {
-                        return true;
-                    }
-                } else if (direction == 2) {
-                    if (i < level.length - 1 && level[i + 1][j] == ' ') {
-                        return true;
-                    }
-                } else if (direction == 3) {
-                    if (j > 0 && level[i][j + 1] == ' ') {
-                        return true;
-                    }
-                } else if (direction == 4) {
-                    if (j < level[i].length && level[i][j - 1] == ' ') {
-                        return true;
-                    }
-                }
-            }
+        int[] oldPosition = figurePosition(level);
+        int[] newPosition = adjacentPosition(oldPosition, direction);
+        int[] boxNewPosition = adjacentPosition(newPosition, direction);
+        switch (level[newPosition[1]][newPosition[0]]) {
+            case '#':
+                return false;
+            case ' ':
+            case '.':
+                level[newPosition[1]][newPosition[0]] = level[oldPosition[1]][oldPosition[0]];
+                level[oldPosition[1]][oldPosition[0]] = ' ';
+                return true;
+            case '$':
+                if (level[boxNewPosition[1]][boxNewPosition[0]] != '#' && level[boxNewPosition[1]][boxNewPosition[0]] != '$') {
+                    level[boxNewPosition[1]][boxNewPosition[0]] = level[newPosition[1]][newPosition[0]];
+                    level[newPosition[1]][newPosition[0]] = level[oldPosition[1]][oldPosition[0]];
+                    level[oldPosition[1]][oldPosition[0]] = ' ';
+                    return true;
+                } else return false;
         }
         return false;
     }
@@ -229,23 +228,30 @@ public class Aufgabe1 {
     // returns current position of all boxes
     private static int[][] boxPositions(char[][] level, int numberOfBoxes) {
         // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        return null; //Zeile kann geändert oder entfernt werden.
+        int[][] boxes = new int[numberOfBoxes][2];
+        for (int i = 0, x = 0, y = 0; i < level.length; i++) {
+            for (int j = 0; j < level[i].length; j++) {
+                if (level[i][j] == '$') {
+                    boxes[x][0] = j;
+                    boxes[x][1] = i;
+                    x++;
+                    if (y == 0) y = 1;
+                    else y = 0;
+                }
+            }
+        }
+        return boxes;
     }
 
     // returns true if all boxes are on a goal
     private static boolean won(char[][] level, int[][] goals) {
         // TODO: Implementieren Sie hier Ihre Lösung für die Methode
-        int numberOfGoals = goals.length;
-        int counter = 0;
-        for (int i = 0; i < level.length; i++) {
-            for (int j = 0; j < level[i].length; j++) {
-                if (level[i][j] == '$') {
-                    if (level[i][j] == goals[i][j]) counter++;
-                }
-            }
+        boolean check = true;
+        int[][] boxes = boxPositions(level, goals.length);
+        for (int i = 0; check && i < goals.length; ++i) {
+            check = Arrays.equals(boxes[i], goals[i]);
         }
-        if (numberOfGoals == counter) return true;
-        else return false;
+        return check;
     }
 
     // helping method to set the StdDraw window size and the scaling of the axis
@@ -266,5 +272,31 @@ public class Aufgabe1 {
     // draws the current level with all elements
     private static void drawGame(char[][] level, int[][] goals) {
         // TODO: Implementieren Sie hier Ihre Lösung für die Methode
+        for (int i = 0; i < goals.length; i++) {
+            if (level[goals[i][1]][goals[i][0]] == ' ') level[goals[i][1]][goals[i][0]] = '.';
+        }
+        for (int i = level.length - 1, y = 0; i >= 0; i--, y++) {
+            for (int x = 0; x < level[i].length; x++) {
+                switch (level[i][x]) {
+                    case '#':
+                        StdDraw.picture(20 + x * SQUARE_SIZE, 20 + y * SQUARE_SIZE, "wall.png", SQUARE_SIZE, SQUARE_SIZE);
+                        break;
+                    case '$':
+                        StdDraw.picture(20 + x * SQUARE_SIZE, 20 + y * SQUARE_SIZE, "box.png", SQUARE_SIZE, SQUARE_SIZE);
+                        break;
+                    case '@':
+                        StdDraw.picture(20 + x * SQUARE_SIZE, 20 + y * SQUARE_SIZE, "figure.png", SQUARE_SIZE, SQUARE_SIZE);
+                        break;
+                    case '.':
+                        StdDraw.picture(20 + x * SQUARE_SIZE, 20 + y * SQUARE_SIZE, "endpoint.png", SQUARE_SIZE, SQUARE_SIZE);
+                        break;
+                    case ' ':
+                        StdDraw.setPenColor(Color.white);
+                        StdDraw.filledSquare(20 + x * SQUARE_SIZE, 20 + y * SQUARE_SIZE, 20);
+                        break;
+                }
+            }
+        }
+        StdDraw.show();
     }
 }
